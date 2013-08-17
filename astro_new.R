@@ -163,6 +163,7 @@ run.svm<-function(){
    frac.train=0.70
    frac.valid=0.25
    
+   crv=new.env()
    crv$seed <- 42 
    crs$dataset <- read.csv("file:///Users/davej/TW/tw-analytics-summit/data/astro/sdss2.csv", 
                            na.strings=c(".", "NA", "", "?"), strip.white=TRUE, 
