@@ -50,3 +50,34 @@ add.colors<-function(data){
    data[,ri:=r-i]
    data[,iz:=i-z]
 }
+
+score.my.classifyer<-function(predicted.class,true.class) {
+   #calculate the precision, recall and F-score for 
+   #predicted and true binary classifications
+   
+   #check to make sure there are logicals TRUE and FALSE
+   stopifnot(class(predicted.class)=="logical")
+   
+}
+
+test.logistic<-function(){
+   num=300
+   d1=data.table(x=rnorm(num),y=rnorm(num),cl="quasar")
+   d2=data.table(x=rnorm(num)+2,y=rnorm(num)+2,cl="not_quasar")
+   d=rbind(d1,d2)
+   p<-ggplot(d,aes(x,y,colour=cl))+geom_point()
+   print(p)
+   mod=glm(class~x+y,data=d)
+   print(mod)
+}
+
+test.log<-function(d=read.astro()){
+   d[,quasar:=objtype == "quasar"]
+   mod=glm(formula=quasar~ug+gr,data=d)   
+   print(mod)
+   d[,logit:=predict(mod,d)]
+   d[,predictor:=exp(logit)/(1+exp(logit))]
+   d[,cat:=predict(mod,d,type="response")]
+   return(d)
+}
+
