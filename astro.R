@@ -21,3 +21,32 @@ read.astro.raw<-function(){
    data=data.table(data)
    return(data)   
 }
+
+read.astro<-function(){
+   #a simple reader for the astro data-set (SDSS Survey)
+   file=paste(data_dir,'/','sdss.csv',sep='')
+   #read the csv file into a data.frame
+   data=read.csv(file)
+   #convert to a data.table, a more powerful data structure
+   data=data.table(data)
+   #keep only rows with specClass = 1,2,3 which is star,galaxy,quasar
+   data=data[specClass %in% c(1,2,3),]
+   #replace specClass number with a 'factor' 
+   spec.classes=factor(c('star','galaxy','quasar'))
+   data[,objtype:=spec.classes[specClass]]
+   #drop these columns
+   data[,specClass:=NULL]
+   data[,objid:=NULL]
+   #function defined below
+   add.colors(data)
+   return(data)
+}
+
+add.colors<-function(data){
+   #add the colors, note this is side effecting because data.table
+   #is passed by reference unlike data.frame
+   data[,ug:=u-g]
+   data[,gr:=g-r]
+   data[,ri:=r-i]
+   data[,iz:=i-z]
+}
