@@ -162,7 +162,7 @@ run.svm<-function(){
    print("Running support vector machine code")
    frac.train=0.70
    frac.valid=0.25
-   
+   crs=new.env()
    crv=new.env()
    crv$seed <- 42 
    crs$dataset <- read.csv("file:///Users/davej/TW/tw-analytics-summit/data/astro/sdss2.csv", 
